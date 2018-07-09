@@ -7,6 +7,7 @@ import shutil
 import gzip
 import numpy as np
 from scipy.misc import imsave
+from PIL import Image
 
 TRAIN_URL = "https://d17h27t6h515a5.cloudfront.net/topher/2016/December/584f6edd_data/data.zip"
 
@@ -33,14 +34,14 @@ def extract_training_dataset(filename):
     
     feature = pd.DataFrame()
     print('- Moving Files and built csv')
-    dataset = os.path.join(real_path, 'Udacity-dataset')
+    dataset = os.path.join(real_path, 'udacity-dataset')
     if not os.path.exists(dataset):
         os.makedirs(dataset)
     
     df = pd.read_csv(os.path.join(extract_path, 'data', 'driving_log.csv'), delimiter=',')
     data = get_dataframe(df)
     data["filename"] = data["filename"].str.replace('IMG/', os.path.join(dataset, 'IMG/')).str.strip()
-    data.to_csv(os.path.join(extract_path, 'data', 'data.csv'))
+    data.to_pickle(os.path.join(extract_path, 'data', 'data.csv'))
     if not os.path.exists(os.path.join(dataset, 'IMG')):
         shutil.move(os.path.join(extract_path, 'data', 'IMG'), dataset)
         shutil.move(os.path.join(extract_path, 'data', 'data.csv'), dataset)
